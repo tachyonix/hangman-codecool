@@ -15,7 +15,7 @@ high_score_list = []
 def load_list():
     """Loading highscore list"""
     global high_score_list
-    score_file = open('score.txt', 'r')
+    score_file = open('score.txt', encoding="utf8")
     high_score_list = [list(literal_eval(line)) for line in score_file]
     score_file.close()
 
@@ -23,9 +23,9 @@ def load_list():
 def save_list():
     """Saving highscore list"""
     global high_score_list
-    f = open('score.txt', 'w+')
+    f = open('score.txt', 'wb')
     for i in high_score_list:
-        f.write('{}\n'.format(i))
+        f.write('{}\n'.format(i).encode('utf-8', 'ignore'))
     f.close()
 
 
@@ -37,7 +37,7 @@ def score(time, attemps, city):
 
 def hang_animation(health_point):
     """Displaying hangman"""
-    scene = open("end_scene.txt", "r")
+    scene = open("end_scene.txt", encoding="utf8")
     for x, line in enumerate(scene):
         if x < 25 and health_point == 0:
             print(line, end="")
@@ -62,7 +62,7 @@ def fun_win(attemps, capital):
     """After win screen"""
     global high_score_list
     global game_time
-    os.system('clear')
+    os.system('cls')
     game_time = time.time() - game_time
     cprint("\n" + 27 * '*' + "\n", 'yellow')
     hang_animation(6)
@@ -74,7 +74,7 @@ def fun_win(attemps, capital):
     print("You guessed after %d attemps. It took you %d seconds. Your score: %d" % (
         attemps, game_time, score(game_time, attemps, len(capital))))
     name_user = input("Click Enter to continue (type your name): ")
-    os.system('clear')
+    os.system('cls')
     load_list()
     high_score_list.append([score(game_time, attemps, len(capital)), name_user, game_time, attemps, capital])
     save_list()
@@ -85,7 +85,7 @@ def fun_win(attemps, capital):
 def fun_lose(attemps):
     """After lose screen"""
     global game_time
-    os.system('clear')
+    os.system('cls')
     game_time = time.time() - game_time
     cprint("\n" + 27 * '*' + "\n", 'yellow')
     hang_animation(0)
@@ -96,7 +96,7 @@ def fun_lose(attemps):
 
     print("You not guessed after %d attemps. It took you %d seconds." % (attemps, game_time))
     input("Click Enter to continue")  # wraca do menu
-    os.system('clear')
+    os.system('cls')
     return
 
 
@@ -107,7 +107,7 @@ def fun_play(country, capital, capitaldash):
     global health
 
     while True:
-        os.system('clear')
+        os.system('cls')
         cprint("\n" + 27 * '*' + "\n", 'yellow')
         hang_animation(health)
         cprint("\n" + 27 * '*' + "\n", 'yellow')
@@ -193,7 +193,7 @@ def fun_leaderboards():
 
 def fun_loadcountries():
     """Loading all contries and return random one"""
-    countries_file = open("countries_and_capitals.txt", "r")
+    countries_file = open("countries_and_capitals.txt", encoding="utf8")
     countries_array = countries_file.readlines()
     countries_file.close()
 
@@ -202,28 +202,28 @@ def fun_loadcountries():
 
 def fun_effectwow(what):
     """Special effect"""
-    f = open(what, 'r')
+    f = open(what, encoding="utf8")
     colorlist = ["red", "green", "yellow", "blue", "magenta", "cyan", "white"]
     effect_list = [line[:-1] for line in f]
     f.close()
 
     for i in range( len(effect_list[0]) ):
-        os.system('clear')
+        os.system('cls')
         for x in range(len(effect_list)):
             cprint(effect_list[x][:i],random.choice(colorlist))
-        time.sleep(0.02)
+        time.sleep(0.001)
 
 
 
 def main():
     """First function after loading program"""
     if not os.path.exists("score.txt"):
-        scorelist = open("score.txt", "w")
+        scorelist = open("score.txt", encoding="utf8")
         scorelist.close()
 
     global game_time
     global health
-    os.system('clear')
+    os.system('cls')
 
     while True:
         fun_effectwow('2effect.txt')
